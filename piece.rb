@@ -1,7 +1,7 @@
 class Piece
 
-  attr_accessor :king
-  attr_reader :pos, :color, :can_jump
+  attr_accessor :king, :deltas
+  attr_reader :pos, :color
 
   def initialize(board, pos, color)
     @pos = pos
@@ -49,6 +49,8 @@ class Piece
 
     moves.select { |move| on_board?(move) && not_blocked?(move) }
   end
+
+  private
 
   def jumping_moves
     moves = []

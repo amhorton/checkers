@@ -36,10 +36,21 @@ class Board
     end
   end
 
+  def jump_available?(color)
+    @grid.each do |row|
+      row.each do |piece|
+        if piece && piece.color == color and piece.simple_moves != piece.moves
+          return true
+        end
+      end
+    end
+    false
+  end
+
 
 end
 
 my_board = Board.new
 francis = Piece.new(my_board, [5,4], :l)
 p my_board.grid
-p my_board[[6,5]].moves
+p my_board.jump_available?(:l)
