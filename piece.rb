@@ -37,9 +37,7 @@ class Piece
 
 
   def moves
-
     simple_moves + jumping_moves
-
   end
 
   def simple_moves
@@ -49,22 +47,22 @@ class Piece
       moves << [pos.first + dx, pos.last + dy]
     end
 
-    moves.select! { |move| on_board?(move) }
+    moves.select { |move| on_board?(move) }
   end
 
   def jumping_moves
     moves = []
 
     @deltas.each do |(dx, dy)|
-      if @board[pos.first + dx, pos.last + dy] && @board[pos.first + dx, pos.last + dy].color != color
+      if @board[[pos.first + dx, pos.last + dy]] && @board[[pos.first + dx, pos.last + dy]].color != color
 
-        unless @board[pos.first + (2 * dx), pos.last + (2 *dy)]
+        unless @board[[pos.first + (2 * dx), pos.last + (2 *dy)]]
           moves << [pos.first + (2 * dx), pos.last + (2 *dy)]
         end
       end
     end
 
-    moves.select! { |move| on_board?(move) }
+    moves.select { |move| on_board?(move) }
   end
 
   def enemy?(pos)
