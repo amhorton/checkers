@@ -40,4 +40,6 @@ class Board
 end
 
 my_board = Board.new
+francis = Piece.new(my_board, [5,4], :l)
 p my_board.grid
+p francis.moves
