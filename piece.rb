@@ -47,14 +47,14 @@ class Piece
       moves << [pos.first + dx, pos.last + dy]
     end
 
-    moves.select { |move| on_board?(move) }
+    moves.select { |move| on_board?(move) && not_blocked?(move) }
   end
 
   def jumping_moves
     moves = []
 
     @deltas.each do |(dx, dy)|
-      if @board[[pos.first + dx, pos.last + dy]] && @board[[pos.first + dx, pos.last + dy]].color != color
+      if enemy?([pos.first + dx, pos.last + dy])
 
         unless @board[[pos.first + (2 * dx), pos.last + (2 *dy)]]
           moves << [pos.first + (2 * dx), pos.last + (2 *dy)]
@@ -62,15 +62,19 @@ class Piece
       end
     end
 
-    moves.select { |move| on_board?(move) }
+    moves.select { |move| on_board?(move) && not_blocked?(move) }
   end
 
   def enemy?(pos)
     if @board[pos] and @board[pos].color != color
       return true
     end
+    false
   end
 
+  def not_blocked?(pos)
+    @board[pos] == nil
+  end
 
   def on_board?(move)
     move.all? { |pos| pos.between?(0, 7) }
