@@ -19,7 +19,6 @@ class Piece
       @deltas = [[-1, 1], [1, 1]]
     end
 
-
   end
 
   def inspect
