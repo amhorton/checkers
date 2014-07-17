@@ -98,7 +98,7 @@ class Board
 
     unless self[end_pos].jumping_moves.empty?
       if self[end_pos].jumping_moves.length == 1
-        self.move(end_pos, self[end_pos].jumping_moves.first)
+        self.jump(end_pos, self[end_pos].jumping_moves.first)
       elsif self[end_pos].jumping_moves.length > 1
         next_jump(end_pos)
       end

@@ -71,6 +71,9 @@ class Game
       else
         @turn = :d
       end
+
+      system("clear")
+
     end
 
     if @turn == :d
