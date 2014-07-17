@@ -26,14 +26,14 @@ class Board
     if self[start_pos].jumping_moves.include?(end_pos)
       jump(start_pos, end_pos)
     else
-      slide(start_pos, end_pos)
+      simple_move(start_pos, end_pos)
     end
   end
 
   def jump_available?(color)
     @grid.each do |row|
       row.each do |piece|
-        if piece && piece.color == color && piece.simple_moves != piece.moves
+        if piece && piece.color == color && piece.jumping_moves.any?
           return true
         end
       end

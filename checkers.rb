@@ -99,9 +99,9 @@ class Game
   def promote
     @board.grid.each do |row|
       row.each do |piece|
-        if piece && piece.pos.last == 0 and piece.color == :d
+        if piece && piece.pos.last == 0 && piece.color == :d
           piece.king = true
-        elsif piece && piece.pos.last == 7 and piece.color == :l
+        elsif piece && piece.pos.last == 7 && piece.color == :l
           piece.king = true
         end
       end
@@ -117,14 +117,4 @@ end
 
 
 my_game = Game.new
-
-#forced double jump scenario
-#my_game.board[[0,1]] = nil
-#francis = Piece.new(my_game.board, [3,4], :l)
-
-#promotion scenario
-# francis = Piece.new(my_game.board, [0,1], :d)
-# my_game.board[[1,0]] = nil
-# my_game.board[[5,0]] = nil
-
 my_game.play

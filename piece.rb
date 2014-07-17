@@ -25,8 +25,6 @@ class Piece
     end
   end
 
-  #refactor deltas into method
-
   def inspect
     if color == :d
       if king
