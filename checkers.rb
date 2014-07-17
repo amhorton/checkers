@@ -8,7 +8,9 @@ class Game
   end
 
   def play
+    i = 0
 
+    until i == 10
       @board.display
 
       if @board.jump_available?(@turn)
@@ -33,13 +35,56 @@ class Game
 
       @board.move(start_pos, end_pos)
 
-      @board.display
+      unless @board[end_pos].jumping_moves.empty? and
+        if @board[end_pos].jumping_moves.length == 1
+          move(end_pos, @board[end_pos].jumping_moves.first)
+        elsif @board[end_pos].jumping_moves.length > 1
+          next_jump(end_pos)
+        end
+      end
 
-    #promotes pieces to king
-    #toggles the turn
+      #promote
 
+      if @turn == :d
+        @turn = :l
+      else
+        @turn = :d
+      end
+
+      i += 1
+    end
+  end
+
+  def next_jump(start_pos)
+    @board.display
+    puts "Where should this piece jump next?"
+
+    end_pos = gets.chomp.split(",").map { |num| num.to_i }
+
+    if @board[start_pos].jumping_moves.include?(end_pos)
+      @board.move(pos, end_pos)
+    else
+      raise CheckersError, "That's not a jumping move!"
+    end
 
   end
+
+  def promote
+    @board.grid.each do |row|
+      row.each do |piece|
+        if piece && piece.pos.last == 0 and piece.color == :d
+          piece.king = true
+          piece.deltas = [[-1, 1], [-1, -1], [1, 1], [1, -1]]
+        elsif piece && piece.pos.last == 7 and piece.color == :l
+          piece.king = true
+          piece.deltas = [[-1, 1], [-1, -1], [1, 1], [1, -1]]
+        end
+      end
+    end
+  end
+
+
+
 end
 
 my_game = Game.new

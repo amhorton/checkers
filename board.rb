@@ -19,6 +19,11 @@ class Board
 
   def move(start_pos, end_pos)
     if self[start_pos].moves.include?(end_pos)
+
+      if self[start_pos].jumping_moves.include?(end_pos)
+        kill(start_pos, end_pos)
+      end
+
       self[end_pos] = self[start_pos]
       self[end_pos].pos = end_pos
       self[start_pos] = nil
@@ -26,26 +31,13 @@ class Board
       raise CheckersError, "That piece can't move there!"
     end
 
-    unless self[end_pos].jumping_moves.empty?
-      if self[end_pos].jumping_moves.length == 1
-        move(end_pos, self[end_pos].jumping_moves.first)
-      else
-        next_jump = next_jump(end_pos)
-        move(end_pos, next_jump)
-      end
-    end
-
   end
 
-  def next_jump(start_pos)
-    display
-    puts "Where should this piece jump next?"
-
-    end_pos = gets.chomp.split(",").map { |num| num.to_i }
-    move(pos, end_pos)
-
+  def kill(start_pos, end_pos)
+    mid_x = (start_pos.first + end_pos.first) / 2
+    mid_y = (start_pos.last + end_pos.last) / 2
+    self[[mid_x, mid_y]] = nil
   end
-
 
   def jump_available?(color)
     @grid.each do |row|
