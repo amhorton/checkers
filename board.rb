@@ -19,28 +19,14 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    if self[start_pos].moves.include?(end_pos)
+    unless self[start_pos].moves.include?(end_pos)
       raise CheckersError, "That piece can't move there!"
     end
 
     if self[start_pos].jumping_moves.include?(end_pos)
-      kill(start_pos, end_pos)
-
-      self[end_pos] = self[start_pos]
-      self[end_pos].pos = end_pos
-      self[start_pos] = nil
-
-      unless self[end_pos].jumping_moves.empty?
-        if self[end_pos].jumping_moves.length == 1
-          self.move(end_pos, self[end_pos].jumping_moves.first)
-        elsif self[end_pos].jumping_moves.length > 1
-          next_jump(end_pos)
-        end
-      end
+      jump(start_pos, end_pos)
     else
-      self[end_pos] = self[start_pos]
-      self[end_pos].pos = end_pos
-      self[start_pos] = nil
+      slide(start_pos, end_pos)
     end
   end
 
@@ -80,12 +66,6 @@ class Board
     end
   end
 
-  def kill(start_pos, end_pos)
-    mid_x = (start_pos.first + end_pos.first) / 2
-    mid_y = (start_pos.last + end_pos.last) / 2
-    self[[mid_x, mid_y]] = nil
-  end
-
   def render(grid)
     puts "   A  B  C  D  E  F  G  H"
     color_toggle = false
@@ -111,5 +91,29 @@ class Board
     end
   end
 
+  def jump(start_pos, end_pos)
+    kill(start_pos, end_pos)
 
+    slide(start_pos, end_pos)
+
+    unless self[end_pos].jumping_moves.empty?
+      if self[end_pos].jumping_moves.length == 1
+        self.move(end_pos, self[end_pos].jumping_moves.first)
+      elsif self[end_pos].jumping_moves.length > 1
+        next_jump(end_pos)
+      end
+    end
+  end
+
+  def slide(start_pos, end_pos)
+    self[end_pos] = self[start_pos]
+    self[end_pos].pos = end_pos
+    self[start_pos] = nil
+  end
+
+  def kill(start_pos, end_pos)
+    mid_x = (start_pos.first + end_pos.first) / 2
+    mid_y = (start_pos.last + end_pos.last) / 2
+    self[[mid_x, mid_y]] = nil
+  end
 end

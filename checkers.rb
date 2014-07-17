@@ -60,7 +60,7 @@ class Game
         @board.move(start_pos, end_pos)
 
       rescue CheckersError => e
-        puts e.colorize(:red)
+        puts e.to_s.colorize(:red)
         retry
       end
 
@@ -71,6 +71,12 @@ class Game
       else
         @turn = :d
       end
+    end
+
+    if @turn == :d
+      puts "White wins!".colorize(:green)
+    else
+      puts "Red wins!".colorize(:green)
     end
   end
 
