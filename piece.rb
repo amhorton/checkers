@@ -1,3 +1,6 @@
+class CheckersError < StandardError
+end
+
 class Piece
 
   attr_accessor :king, :deltas
@@ -21,9 +24,17 @@ class Piece
 
   def inspect
     if color == :d
-      " ⚈ "
+      if king
+        " ♚ "
+      else
+        " ⚈ "
+      end
     else
-      " ⚆ "
+      if king
+        " ♔ "
+      else
+        " ⚆ "
+      end
     end
   end
 

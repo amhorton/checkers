@@ -36,6 +36,16 @@ class Board
     end
   end
 
+  def move(start_pos, end_pos)
+    if self[start_pos].moves.include?(end_pos)
+      self[end_pos] = self[start_pos]
+      self[end_pos].pos = end_pos
+      self[start_pos] = nil
+    else
+      raise CheckersError, "That piece can't move there!"
+    end
+  end
+
   def jump_available?(color)
     @grid.each do |row|
       row.each do |piece|
