@@ -24,9 +24,9 @@ class Piece
   def inspect
     if color == :d
       if king
-        " ♚ "
+        " ♚ ".colorize(:red)
       else
-        " ⚈ "
+        " ⚈ ".colorize(:red)
       end
     else
       if king
@@ -36,15 +36,6 @@ class Piece
       end
     end
   end
-
-  # def to_s
- #    if color == :d
- #      " ⚈ "
- #    else
- #      " ⚆ "
- #    end
- #  end
-
 
   def moves
     simple_moves + jumping_moves
@@ -93,27 +84,3 @@ class Piece
   end
 
 end
-
-# class DarkPiece < Piece
-#
-#   def initialize(pos, board)
-#     @color = :d
-#
-#     super(pos, board)
-#   end
-#
-#
-# end
-#
-#
-# class LightPiece < Piece
-#
-#   def initialize(pos, board)
-#     @color = :l
-#
-#     super(pos, board)
-#   end
-#
-#
-#
-# end

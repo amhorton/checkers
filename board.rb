@@ -1,4 +1,5 @@
 require_relative 'piece'
+require "colorize"
 
 class Board
 
@@ -33,12 +34,6 @@ class Board
 
   end
 
-  def kill(start_pos, end_pos)
-    mid_x = (start_pos.first + end_pos.first) / 2
-    mid_y = (start_pos.last + end_pos.last) / 2
-    self[[mid_x, mid_y]] = nil
-  end
-
   def jump_available?(color)
     @grid.each do |row|
       row.each do |piece|
@@ -51,7 +46,7 @@ class Board
   end
 
   def display
-    p grid
+    render(grid)
   end
 
   private
@@ -72,6 +67,37 @@ class Board
         end
 
       end
+    end
+  end
+
+  def kill(start_pos, end_pos)
+    mid_x = (start_pos.first + end_pos.first) / 2
+    mid_y = (start_pos.last + end_pos.last) / 2
+    self[[mid_x, mid_y]] = nil
+  end
+
+  def render(grid)
+    puts "   A  B  C  D  E  F  G  H" + ""
+    color_toggle = false
+
+
+    grid.each_with_index do |row, index|
+
+      string = "#{8 - index} "
+      color_toggle = !color_toggle
+
+      row.each do |piece|
+        color = color_toggle ? :grey : :white
+        unless piece.nil?
+          color_toggle = !color_toggle
+          string << piece.inspect.colorize(:background => color)
+        else piece.nil?
+          string << "   ".colorize(:background => color)
+          color_toggle = !color_toggle
+        end
+      end
+
+      puts string
     end
   end
 
