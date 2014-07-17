@@ -1,7 +1,7 @@
 class Piece
 
   attr_accessor :king
-  attr_reader :pos, :color
+  attr_reader :pos, :color, :can_jump
 
   def initialize(board, pos, color)
     @pos = pos
@@ -27,13 +27,13 @@ class Piece
     end
   end
 
-  def to_s
-    if color == :d
-      " ⚈ "
-    else
-      " ⚆ "
-    end
-  end
+  # def to_s
+ #    if color == :d
+ #      " ⚈ "
+ #    else
+ #      " ⚆ "
+ #    end
+ #  end
 
 
   def moves
@@ -41,10 +41,24 @@ class Piece
 
     @deltas.each do |(dx, dy)|
       moves << [pos.first + dx, pos.last + dy]
+
+      if @board[pos.first + dx, pos.last + dy] && @board[pos.first + dx, pos.last + dy].color != color
+
+        unless @board[pos.first + (2 * dx), pos.last + (2 *dy)]
+          moves << [pos.first + (2 * dx), pos.last + (2 *dy)]
+        end
+      end
     end
 
-    moves.select { |move| on_board?(move) }
+    moves.select! { |move| on_board?(move) }
   end
+
+  def enemy?(pos)
+    if @board[pos] and @board[pos].color != color
+      return true
+    end
+  end
+
 
   def on_board?(move)
     move.all? { |pos| pos.between?(0, 7) }
