@@ -13,13 +13,19 @@ class Piece
     @board = board
     @board[pos] = self
 
-    if color == :d
-      @deltas = [[-1, -1], [1,-1]]
-    else
-      @deltas = [[-1, 1], [1, 1]]
-    end
-
   end
+
+  def deltas
+    if king
+      [[-1, -1], [1,-1], [1, 1], [1, 1]]
+    elsif color == :l
+      [[-1, 1], [1, 1]]
+    else
+      [[-1, -1], [1,-1]]
+    end
+  end
+
+  #refactor deltas into method
 
   def inspect
     if color == :d
@@ -44,7 +50,7 @@ class Piece
   def simple_moves
     moves = []
 
-    @deltas.each do |(dx, dy)|
+    deltas.each do |(dx, dy)|
       moves << [pos.first + dx, pos.last + dy]
     end
 
@@ -54,7 +60,7 @@ class Piece
   def jumping_moves
     moves = []
 
-    @deltas.each do |(dx, dy)|
+    deltas.each do |(dx, dy)|
       if enemy?([pos.first + dx, pos.last + dy])
 
         unless @board[[pos.first + (2 * dx), pos.last + (2 *dy)]]
@@ -66,10 +72,13 @@ class Piece
     moves.select { |move| on_board?(move) && not_blocked?(move) }
   end
 
+
+
   private
 
+  #move these to Board class
   def enemy?(pos)
-    if @board[pos] and @board[pos].color != color
+    if @board[pos] && @board[pos].color != color
       return true
     end
     false

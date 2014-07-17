@@ -3,7 +3,7 @@ require "colorize"
 
 class Board
 
-  attr_accessor :grid
+  attr_reader :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
@@ -33,7 +33,7 @@ class Board
   def jump_available?(color)
     @grid.each do |row|
       row.each do |piece|
-        if piece && piece.color == color and piece.simple_moves != piece.moves
+        if piece && piece.color == color && piece.simple_moves != piece.moves
           return true
         end
       end
@@ -42,13 +42,13 @@ class Board
   end
 
   def display
-    render(grid)
+    render
   end
 
   private
 
   def populate_board
-    @grid.each_with_index do |row, y|
+    grid.each_with_index do |row, y|
 
       row.each_index do |x|
 
@@ -66,7 +66,7 @@ class Board
     end
   end
 
-  def render(grid)
+  def render
     puts "   A  B  C  D  E  F  G  H"
     color_toggle = false
 
@@ -94,7 +94,7 @@ class Board
   def jump(start_pos, end_pos)
     kill(start_pos, end_pos)
 
-    slide(start_pos, end_pos)
+    simple_move(start_pos, end_pos)
 
     unless self[end_pos].jumping_moves.empty?
       if self[end_pos].jumping_moves.length == 1
@@ -105,7 +105,25 @@ class Board
     end
   end
 
-  def slide(start_pos, end_pos)
+  def next_jump(start_pos)
+    begin
+      display
+      puts "Where should this piece jump next?"
+
+      end_pos = translate(gets.chomp.split(""))
+
+      if self[start_pos].jumping_moves.include?(end_pos)
+        move(start_pos, end_pos)
+      else
+        raise CheckersError, "That's not a jumping move!"
+      end
+    rescue CheckersError => e
+      puts e.to_s.colorize(:red)
+      retry
+    end
+  end
+
+  def simple_move(start_pos, end_pos)
     self[end_pos] = self[start_pos]
     self[end_pos].pos = end_pos
     self[start_pos] = nil

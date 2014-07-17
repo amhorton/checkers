@@ -96,30 +96,13 @@ class Game
     true
   end
 
-
-  def next_jump(start_pos)
-    @board.display
-    puts "Where should this piece jump next?"
-
-    end_pos = translate(gets.chomp.split(""))
-
-    if @board[start_pos].jumping_moves.include?(end_pos)
-      @board.move(start_pos, end_pos)
-    else
-      raise CheckersError, "That's not a jumping move!"
-    end
-
-  end
-
   def promote
     @board.grid.each do |row|
       row.each do |piece|
         if piece && piece.pos.last == 0 and piece.color == :d
           piece.king = true
-          piece.deltas = [[-1, 1], [-1, -1], [1, 1], [1, -1]]
         elsif piece && piece.pos.last == 7 and piece.color == :l
           piece.king = true
-          piece.deltas = [[-1, 1], [-1, -1], [1, 1], [1, -1]]
         end
       end
     end
