@@ -20,18 +20,28 @@ class Board
 
   def move(start_pos, end_pos)
     if self[start_pos].moves.include?(end_pos)
+      raise CheckersError, "That piece can't move there!"
+    end
 
-      if self[start_pos].jumping_moves.include?(end_pos)
-        kill(start_pos, end_pos)
-      end
+    if self[start_pos].jumping_moves.include?(end_pos)
+      kill(start_pos, end_pos)
 
       self[end_pos] = self[start_pos]
       self[end_pos].pos = end_pos
       self[start_pos] = nil
-    else
-      raise CheckersError, "That piece can't move there!"
-    end
 
+      unless self[end_pos].jumping_moves.empty?
+        if self[end_pos].jumping_moves.length == 1
+          self.move(end_pos, self[end_pos].jumping_moves.first)
+        elsif self[end_pos].jumping_moves.length > 1
+          next_jump(end_pos)
+        end
+      end
+    else
+      self[end_pos] = self[start_pos]
+      self[end_pos].pos = end_pos
+      self[start_pos] = nil
+    end
   end
 
   def jump_available?(color)

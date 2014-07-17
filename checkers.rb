@@ -33,7 +33,7 @@ class Game
         end
 
         if @board.jump_available?(@turn)
-          puts "You have a jump available!"
+          puts "You have a jump available!".colorize(:blue)
         end
 
         puts "Where is the piece that you'd like to move?"
@@ -59,15 +59,8 @@ class Game
 
         @board.move(start_pos, end_pos)
 
-        unless @board[end_pos].jumping_moves.empty?
-          if @board[end_pos].jumping_moves.length == 1
-            @board.move(end_pos, @board[end_pos].jumping_moves.first)
-          elsif @board[end_pos].jumping_moves.length > 1
-            next_jump(end_pos)
-          end
-        end
       rescue CheckersError => e
-        print e
+        puts e.colorize(:red)
         retry
       end
 
@@ -78,8 +71,6 @@ class Game
       else
         @turn = :d
       end
-
-      i += 1
     end
   end
 
@@ -133,9 +124,6 @@ class Game
     pos[1] = 8 - pos.last.to_i
     pos
   end
-
-
-
 end
 
 
