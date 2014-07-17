@@ -77,7 +77,7 @@ class Board
   end
 
   def render(grid)
-    puts "   A  B  C  D  E  F  G  H" + ""
+    puts "   A  B  C  D  E  F  G  H"
     color_toggle = false
 
 

@@ -88,13 +88,14 @@ class Game
   def over?(color)
     @board.grid.each do |row|
       row.each do |piece|
-        if piece && piece.color = color
+        if piece && piece.color == color
           unless piece.moves.empty?
             return false
           end
         end
       end
     end
+
     true
   end
 
