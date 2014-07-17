@@ -41,6 +41,20 @@ class Board
     false
   end
 
+  def jump(start_pos, end_pos)
+    kill(start_pos, end_pos)
+
+    simple_move(start_pos, end_pos)
+
+    unless self[end_pos].jumping_moves.empty?
+      if self[end_pos].jumping_moves.length == 1
+        self.jump(end_pos, self[end_pos].jumping_moves.first)
+      elsif self[end_pos].jumping_moves.length > 1
+        next_jump(end_pos)
+      end
+    end
+  end
+
   def display
     render
   end
@@ -88,20 +102,6 @@ class Board
       end
 
       puts string
-    end
-  end
-
-  def jump(start_pos, end_pos)
-    kill(start_pos, end_pos)
-
-    simple_move(start_pos, end_pos)
-
-    unless self[end_pos].jumping_moves.empty?
-      if self[end_pos].jumping_moves.length == 1
-        self.jump(end_pos, self[end_pos].jumping_moves.first)
-      elsif self[end_pos].jumping_moves.length > 1
-        next_jump(end_pos)
-      end
     end
   end
 

@@ -22,9 +22,12 @@ class Game
 
   def play
 
+    system("clear")
+
     until over?(@turn)
+      @board.display
+
       begin
-        @board.display
 
         if @turn == :l
           puts "White's turn!"
@@ -66,14 +69,9 @@ class Game
 
       promote
 
-      if @turn == :d
-        @turn = :l
-      else
-        @turn = :d
-      end
+      toggle_turn
 
       system("clear")
-
     end
 
     if @turn == :d
@@ -97,6 +95,14 @@ class Game
     end
 
     true
+  end
+
+  def toggle_turn
+    if @turn == :d
+      @turn = :l
+    else
+      @turn = :d
+    end
   end
 
   def promote
