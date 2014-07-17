@@ -25,7 +25,27 @@ class Board
     else
       raise CheckersError, "That piece can't move there!"
     end
+
+    unless self[end_pos].jumping_moves.empty?
+      if self[end_pos].jumping_moves.length == 1
+        move(end_pos, self[end_pos].jumping_moves.first)
+      else
+        next_jump = next_jump(end_pos)
+        move(end_pos, next_jump)
+      end
+    end
+
   end
+
+  def next_jump(start_pos)
+    display
+    puts "Where should this piece jump next?"
+
+    end_pos = gets.chomp.split(",").map { |num| num.to_i }
+    move(pos, end_pos)
+
+  end
+
 
   def jump_available?(color)
     @grid.each do |row|
@@ -65,9 +85,3 @@ class Board
 
 
 end
-
-my_board = Board.new
-francis = Piece.new(my_board, [5,4], :l)
-my_board.display
-my_board.move([5,4], [6,7])
-my_board.display

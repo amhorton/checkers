@@ -3,8 +3,8 @@ end
 
 class Piece
 
-  attr_accessor :king, :deltas
-  attr_reader :pos, :color
+  attr_accessor :king, :deltas, :pos
+  attr_reader :color
 
   def initialize(board, pos, color)
     @pos = pos
@@ -60,8 +60,6 @@ class Piece
     moves.select { |move| on_board?(move) && not_blocked?(move) }
   end
 
-  private
-
   def jumping_moves
     moves = []
 
@@ -76,6 +74,8 @@ class Piece
 
     moves.select { |move| on_board?(move) && not_blocked?(move) }
   end
+
+  private
 
   def enemy?(pos)
     if @board[pos] and @board[pos].color != color
